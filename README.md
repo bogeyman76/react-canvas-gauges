@@ -1,7 +1,6 @@
-# react-canvas-gauges
+# react-radial-gauge
 
-Bridges a react app to the NPM canvas-gauges library.
-Useful if you want to create highly customizable linear or radial gauges.
+Bridges a react app to the NPM canvas-gauges library radial gauge.
 
 Requires the following package:
 https://www.npmjs.com/package/canvas-gauges
