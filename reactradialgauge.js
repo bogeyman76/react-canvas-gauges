@@ -2,33 +2,31 @@
 // Use this.gauge.options.* to change parameters
 // and then this.gauge.update() to render
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { RadialGauge } from 'canvas-gauges';
 
-class ReactRadialGauge extends React.Component {
-  constructor(e) {
-    super(e);
-    this.canvasRef = React.createRef();
-  }
+const ReactRadialGauge = (props) => {
+  const canvasRef = useRef(null);
+  const gaugeRef = useRef(null);
 
-  componentDidMount () {
-    const options = Object.assign({}, this.props, { renderTo: this.canvasRef.current });  
-    // renders the element to the webpage
-    this.gauge = new RadialGauge(options).draw();
-    // assign the initial value
-    this.gauge.value = this.props.value;
-  }
+  useEffect(() => {
+    if (!gaugeRef.current) {
+      const options = { ...props, renderTo: canvasRef.current };
+      gaugeRef.current = new RadialGauge(options).draw();
+    }
 
-  componentDidUpdate() {
-   if(this.gauge.value !== this.props.value) 
-    this.gauge.value = this.props.value;
-  }
+    if (gaugeRef.current.value !== props.value) {
+      gaugeRef.current.value = props.value;
+    }
 
-  render () {
-    return (
-      <canvas ref={this.canvasRef} />
-    )
-  }
-}
+    return () => {
+      if (gaugeRef.current) {
+        gaugeRef.current.destroy();
+      }
+    };
+  }, [props]);
+
+  return <canvas ref={canvasRef} />;
+});
 
 export default ReactRadialGauge;
